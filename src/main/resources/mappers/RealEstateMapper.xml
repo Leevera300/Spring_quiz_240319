@@ -54,9 +54,59 @@
 			`real_estate`
 		WHERE
 			<![CDATA[
-        	`area` > #{arg0}
+        	`area` >= #{arg0}
         	AND
-        	`price` < #{arg1}
+        	`price` <= #{arg1}
+        	AND
+        	`type` = '매매'
         	]]>
  	</select>
+ 	
+ 	<insert id="insertRealEstate" parameterType="com.quiz.lesson03.domain.RealEstate">
+ 		INSERT INTO `real_estate`
+ 			(
+ 			`realtorId`
+			, `address`
+			, `area`
+			, `type`
+			, `price`
+			, `createdAt`
+			, `updatedAt`
+ 			)
+ 		Values
+ 		(
+ 			#{realtorId}
+ 			, #{address}
+ 			, #{area}
+ 			, #{type}
+ 			, #{price}
+ 			, NOW()
+ 			, NOW()
+ 		)
+ 	</insert>
+ 	
+ 	<insert id="insertRealEstatebyRealtorIDandAsField" parameterType="map">
+ 		INSERT INTO `real_estate`
+ 			(
+ 			`realtorId`
+			, `address`
+			, `area`
+			, `type`
+			, `price`
+			, `rentPrice`
+			, `createdAt`
+			, `updatedAt`
+ 			)
+ 		Values
+ 		(
+ 			#{realtor_id}
+ 			, #{address}
+ 			, #{area}
+ 			, #{type}
+ 			, #{price}
+ 			, #{rentPrice}
+ 			, NOW()
+ 			, NOW()
+ 		)
+ 	</insert>
  </mapper>

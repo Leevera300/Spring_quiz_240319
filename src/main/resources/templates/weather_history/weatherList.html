@@ -53,7 +53,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="List, Status : ${List}">
-							<td th:text="${#dates.format(List.date, 'yyyy년 M월 d일')}"></td>
+							<td th:text="${#temporals.format(List.date, 'yyyy년 M월 d일')}"></td>
 							<td th:switch="${List.weather}">
 								<img th:case="'비'" src="/img/rainy.jpg" alt="rain">
 								<img th:case="'흐림'" src="/img/cloudy.jpg" alt="cloudy">

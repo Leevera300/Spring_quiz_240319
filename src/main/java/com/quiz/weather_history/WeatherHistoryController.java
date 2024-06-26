@@ -1,7 +1,6 @@
 package com.quiz.weather_history;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class WeatherHistoryController {
 	@Autowired
 	private WeatherHistroyBO weatherHistoryBO;
 	
-	// http://localhost:8080/weather_history/weather-list-view
+	// http://localhost:8080/weather-history/weather-list-view
 	@GetMapping("/weather-list-view")
 	public String weatherList(Model model) {
 		// select DB
@@ -41,7 +40,8 @@ public class WeatherHistoryController {
 	// 날씨 추가 기능 /weather-history/add-weather
 	@PostMapping("/add-weather")
 	public String addWeather(
-			@RequestParam("date") Date date,
+			// RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+			@RequestParam("date") LocalDate date, // String 이나 LocalDate 둘다 됨
 			@RequestParam("weather") String weather,
 			@RequestParam("temperature") String temperature,
 			@RequestParam("precipitation") String precipitation,
@@ -50,7 +50,7 @@ public class WeatherHistoryController {
 		// insert
 		weatherHistoryBO.addWeather(date, weather, temperature, precipitation,
 				microDust, windSpeed);
-		// 화면
-		return "redirect:/add-weather-view";
+		// redirect => 날씨 목록
+		return "redirect:/weather-history/weather-list-view";
 	}
 }

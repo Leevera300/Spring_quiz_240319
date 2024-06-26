@@ -1,12 +1,12 @@
 package com.quiz.weather_history.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class WeatherHistory {
 
 	private int id;
-	private Date date;
+	private LocalDate date;
 	private String weather;
 	private String temperature;
 	private String precipitation;
@@ -21,10 +21,11 @@ public class WeatherHistory {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getDate() {
+	
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	public String getWeather() {

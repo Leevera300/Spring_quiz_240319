@@ -19,7 +19,11 @@
             </div>
             <div class="form-group">
                 <label for="url">주소</label>
-                <input type="text" id="url" name="url" class="form-control" placeholder="예) 19991201">
+                <div class="d-flex">
+	                <input type="text" id="url" name="url" class="form-control col-11">
+	                <button type="button" id="urlCheckBtn" class="btn btn-info col-1">중복확인</button>
+                </div>
+                <small id="urlStatusArea"></small>
             </div>
             <input type="button" id="addUrlBtn" value="추가" class="btn btn-success w-100">
         </form>
@@ -33,13 +37,22 @@
 			
 			let name = $("#name").val().trim();
 			if (!name) {
-				alert("제목을 입력하세요");
+				alert("사이트명을 입력하세요");
+				return;
 			}
 			
-			let url = $("#url").val();
+			let url = $("#url").val().trim();
 			if (!url) {
 				alert("주소를 입력하세요");
+				return;
 			}
+			
+			// http도 아니고 https 아니면 => alert
+			if (url.startsWith("http://") == false && url.startsWith("https://") == false) {
+				alert("주소 형식이 잘못되었습니다.");
+				return;
+			}
+			
 			
 			console.log(name);
 			console.log(url);
@@ -52,19 +65,47 @@
 				, url:"/lesson06/add-url"
 				, data:{"name":name, "url":url}
 			
-				// response
-				, success:function(data) {
-					alert("success");
+				// response  calllback
+				, success:function(data) { // data: JSON String -> jquery ajax 함수가 parsing =? js dictionary
+					// {"code":200, "result":"성공"}
+					// alert("success");
+					if (data.result == "성공") {
+						// 목록 화면으로 이동 - GET Method 요청
+						location.href = "/lesson06/url-list-view";
+					}
 				}
 				
 				, error:function(xhr, status, error) {
-					alert(xhr);
-					alert(status);
-					alert(error);
+					alert("데이터를 추가하는데 실패했습니다.");
+				}
+			});
+		}); // 추가 버튼
+		
+		// url 중복 확인
+		$("#urlCheckBtn").on('click', function() {
+			// alert("중복확인");
+			
+			let url = $("#url").val().trim();
+			
+			$ajax.({
+				//request
+				type:"GET"
+				, url:"/lesson06/is-duplication-url"
+				, data:{"url":url}
+			
+				//response
+				, success:function(data) {
+					if (data.is-duplication) {
+						$("#urlStatusArea").append('<span class="text-danger">중복된 url입니다.</span>');
+					}
+				}
+				
+				, error:function(error) {
+					alert("url 중복확인에 실패했습니다.");
 				}
 			});
 		});
-	});
+	}); //  ready
 	</script>
 </body>
 </html>

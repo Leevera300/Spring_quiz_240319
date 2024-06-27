@@ -6,11 +6,28 @@
  	<insert id="insertUrl" parameterType="map">
  		INSERT INTO `url`
  		(
- 		
+			`name`
+			, `url`
+			, `createdAt`
+			, `updatedAt`
  		)
  		VALUES
  		(
- 		
+ 			#{name}
+ 			, #{url}
+ 			, NOW()
+ 			, NOW()
  		)
  	</insert>
+ 	
+ 	<select id="selectUrlList" resultType="com.quiz.lesson06.domain.Url">
+ 		SELECT
+ 			`id`
+			, `name`
+			, `url`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`url`
+ 	</select>
  </mapper>

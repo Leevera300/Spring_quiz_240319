@@ -15,4 +15,10 @@ public interface UrlMapper {
 			@Param("url") String url);
 	
 	public List<Url> selectUrlList();
+	
+	// input: url
+	// output: List<Url>
+	public List<Url> selectUrlListByUrl(String url);
+	
+	public int deleteUrlById(int id);
 }

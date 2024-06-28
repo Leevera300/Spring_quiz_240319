@@ -30,4 +30,24 @@
 		FROM
 			`url`
  	</select>
+ 	
+ 	<select id="selectUrlListByUrl" parameterType="string" resultType="com.quiz.lesson06.domain.Url">
+ 		SELECT
+ 			`id`
+			, `name`
+			, `url`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`url`
+		WHERE
+			`url` = #{url}
+ 	</select>
+ 	
+ 	<delete id="deleteUrlById" parameterType="int">
+ 		DELETE FROM
+ 			`url`
+ 		WHERE
+ 			`id` = #{id}
+ 	</delete>
  </mapper>

@@ -9,6 +9,104 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </head>
 <body>
+	<div id="wrap" class="container">
+	    <header class="d-flex justify-content-center align-items-center">
+	        <div class="display-4">통나무 펜션</div>
+	    </header>
+	    <nav>
+	        <ul class="nav nav-fill">
+	            <li class="nav-item"><a href="#" class="nav-link text-white font-weight-bold">팬션소개</a></li>
+	            <li class="nav-item"><a href="#" class="nav-link text-white font-weight-bold">객실보기</a></li>
+	            <li class="nav-item"><a href="/booking/make-booking-view" class="nav-link text-white font-weight-bold">예약하기</a></li>
+	            <li class="nav-item"><a href="/booking/booking-list-view" class="nav-link text-white font-weight-bold">예약목록</a></li>
+	        </ul>
+	    </nav>
+	    <section class="banner bg-info">
+            <img id="bannerImage" src="/img/test06_banner1.jpg" alt="banner" width="1110" height="500">
+        </section>
+        <section class="reserve bg-primary d-flex">
+            <section class="real-time-reserved col-4 d-flex justify-content-center align-items-center">
+                <div class="display-4 text-white">실시간<br>예약하기</div>
+            </section>
+            <section class="confirm col-4">
+                <div id="memberBox" class="mr-3 pt-3">
+                	<span class="reserve-confirm-text">예약 확인</span>
+                    <div class="d-flex align-items-center justify-content-end mt-3">
+                        <span class="text-white mr-2">이름</span>
+                        <input type="text" id="name" class="form-control col-9">
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mt-3">
+                        <span class="text-white mr-2">전화번호</span>
+                        <input type="text" id="phoneNumber" class="form-control col-9">
+                    </div>
 
+                    <!-- 버튼 -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" id="checkBookingBtn" class="btn btn-success">조회하기</button>
+                    </div>
+                </div>
+            </section>
+            <section class="inquiry col-4 d-flex justify-content-center align-items-center">
+                <div class="text-white">
+                    <h4 class="font-weight-bold">예약문의:</h4>
+                    <h1>010-<br>0000-1111</h1>
+                </div>
+            </section>
+        </section>
+	    <footer>
+	        <small class="text-secondary">
+	            제주특별자치도 제주시 애월읍<br>
+	            사업자등록번호: 111-22-255222 / 농어촌민박사업자지정 / 대표:김통목<br>
+	            Copyright 20XX tongnamu. All right reserved.
+	        </small>
+	    </footer>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+			$('#checkBookingBtn').on('click', function() {
+				let name = $('#name').val().trim();
+				if(!name) {
+					alert("이름을 입력하세요")
+					return;
+				}
+				let phoneNumber = $('#phoneNumber').val().trim();
+				if(!phoneNumber) {
+					alert("전화번호를 입력하세요")
+					return;
+				}
+				
+				console.log(name);
+				console.log(phoneNumber);
+				
+				$.ajax({
+					//request
+					type:"POST"
+					, url:"/booking/check-booking"
+					, data:{"name":name,
+						"phoneNumber":phoneNumber}
+					
+					//response
+					, success:function(data) { // data: JSON String -> jquery ajax 함수가 parsing =? js dictionary
+					// {"code":200, "result":"성공"}
+					// alert("success");
+					if (data.result == "성공") {
+						// 목록 화면으로 이동 - GET Method 요청
+						alert("이름:" + data.name +"\n"
+							+ "날짜:" + data.date +"\n"
+							+ "일수:" + data.date +"\n"
+							+ "인원:" + data.headcount +"\n"
+							+ "상태:" + data.state);
+						
+					}
+				}
+				
+				, error:function(error) {
+					alert("조회하는데 실패했습니다.");
+				}
+				});
+			});
+		});
+	</script>
 </body>
 </html>

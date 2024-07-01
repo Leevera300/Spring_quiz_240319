@@ -1,5 +1,6 @@
 package com.quiz.booking;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +37,7 @@ public class BookingController {
 		return "booking/bookingList";
 	}
 	
+	// AJAX = 예약 id로 삭제
 	@ResponseBody
 	@DeleteMapping("/delete-booking")
 	public Map<String, Object> deleteBooking(
@@ -59,5 +62,56 @@ public class BookingController {
 	@GetMapping("/make-booking-view")
 	public String makeBookingView() {
 		return "booking/makeBooking";
+	}
+	
+	@ResponseBody
+	@PostMapping("/make-booking")
+	public Map<String, Object> makeBooking(
+			@RequestParam("name") String name,
+			@RequestParam("date") LocalDate date,
+			@RequestParam("day") int day,
+			@RequestParam("headcount") int headcount,
+			@RequestParam("phoneNumber") String phoneNumber) {
+		
+		// DB insert
+		bookingBO.addBooking(name, date, day, headcount, phoneNumber);
+		// return
+		// 성공 JSON
+		// {"code":200, "result":"성공"}
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result; // JSON String
+	}
+	
+	@GetMapping("/check-booking-view")
+	public String checkBookingView() {
+		return "booking/checkBooking";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@PostMapping("/check-booking")
+	public Map<String, Object> checkBooking(
+			@RequestParam("name") String name,
+			@RequestParam("phoneNumber") String phoneNumber) {
+		
+		// DB select
+		Booking checkBooking = bookingBO.getBookingByNameAndPhoneNumber(name, phoneNumber);
+		
+		
+		// return
+		// 성공 JSON
+		// {"code":200, "result":"성공"}
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		// result.putAll((Map<? extends String, ? extends Object>) checkBooking);
+		//result.put("name", checkBooking.getName());
+		//result.put("date", checkBooking.getDate());
+		//result.put("day", checkBooking.getDay());
+		//result.put("headcount", checkBooking.getHeadcount());
+		//result.put("state", checkBooking.getState());
+		return result; // JSON String
 	}
 }

@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+	<!-- datepicker -->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 </head>
 <body>
 	<div id="wrap" class="container">
 	    <header class="d-flex justify-content-center align-items-center">
 	        <div class="display-4">통나무 펜션</div>
 	    </header>
-	    <nav>
+	    <nav class="bg-warning">
 	        <ul class="nav nav-fill">
 	            <li class="nav-item"><a href="#" class="nav-link text-white font-weight-bold">팬션소개</a></li>
 	            <li class="nav-item"><a href="#" class="nav-link text-white font-weight-bold">객실보기</a></li>
@@ -52,5 +57,79 @@
 	        </small>
 	    </footer>
 	</div>
+	
+	<script>
+		$(document).ready(function() {
+			// datepicker 날짜 선택
+			$('#date').datepicker({
+				 dateFormat:"yy-mm-dd"
+				 , minDate:0
+			 });
+			
+			// 예약하기
+			$('#makeBookingBtn').on('click', function () {
+				//alert("예약");
+				
+				let name = $('#name').val().trim();
+				if(!name) {
+					alert("이름을 입력하세요");
+					return;
+				}
+				let date = $('#date').val().trim();
+				if(!date) {
+					alert("예약날짜를 입력하세요");
+					return;
+				}
+				let day = $('#day').val().trim();
+				if(!day) {
+					alert("숙박일수를 입력하세요");
+					return;
+				}
+				let headcount = $('#headcount').val().trim();
+				if(!headcount) {
+					alert("숙박인원을 입력하세요");
+					return;
+				}
+				let phoneNumber = $('#phoneNumber').val().trim();
+				if(!phoneNumber) {
+					alert("전화번호를 입력하세요");
+					return;
+				}
+				
+				console.log(name);
+				console.log(date);
+				console.log(day);
+				console.log(headcount);
+				console.log(phoneNumber);
+				
+				$.ajax({
+					//request
+					type:"POST"
+					, url:"/booking/make-booking"
+					, data:{"name":name,
+						"date":date,
+						"day":day,
+						"headcount":headcount,
+						"phoneNumber":phoneNumber}
+					
+					//response
+					, success:function(data) { // data: JSON String -> jquery ajax 함수가 parsing =? js dictionary
+					// {"code":200, "result":"성공"}
+					// alert("success");
+					if (data.result == "성공") {
+						// 목록 화면으로 이동 - GET Method 요청
+						alert("예약 되었습니다.")
+						location.href = "/booking/booking-list-view";
+					}
+				}
+				
+				, error:function(error) {
+					alert("예약하는데 실패했습니다.");
+				}
+					
+				});
+			});
+		});
+	</script>
 </body>
 </html>

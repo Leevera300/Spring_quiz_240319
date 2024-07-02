@@ -49,7 +49,7 @@
  		)
  	</insert>
  	
- 	<select id="selectBookingByNameAndPhoneNumber" parameterType="map" resultType="com.quiz.booking.domain.Booking">
+ 	<select id="selectBookingListByNameAndPhoneNumber" parameterType="map" resultType="com.quiz.booking.domain.Booking">
  		SELECT
  			`id`
 			, `name`

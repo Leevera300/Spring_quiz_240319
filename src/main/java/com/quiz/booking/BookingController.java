@@ -89,7 +89,6 @@ public class BookingController {
 		return "booking/checkBooking";
 	}
 	
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("/check-booking")
 	public Map<String, Object> checkBooking(
@@ -97,16 +96,23 @@ public class BookingController {
 			@RequestParam("phoneNumber") String phoneNumber) {
 		
 		// DB select
-		Booking checkBooking = bookingBO.getBookingByNameAndPhoneNumber(name, phoneNumber);
+		Booking checkBooking = bookingBO.getLatestBookingByNameAndPhoneNumber(name, phoneNumber);
 		
 		
 		// return
 		// 성공 JSON
-		// {"code":200, "result":"성공"}
+		// {"code":200, "result":checkBooking}
+		// {"code":200, "result":{"id":3, "name":"신보람"......}
 		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-		result.put("result", "성공");
-		// result.putAll((Map<? extends String, ? extends Object>) checkBooking);
+		if (checkBooking != null) {
+			result.put("code", 200);
+			result.put("result", checkBooking);
+		} else {
+			// {"code":500, "error_message":예약 내역이 없습니다.}
+			result.put("code", 500);
+			result.put("error_message", "예약 내역이 없습니다");
+		}
+		
 		//result.put("name", checkBooking.getName());
 		//result.put("date", checkBooking.getDate());
 		//result.put("day", checkBooking.getDay());

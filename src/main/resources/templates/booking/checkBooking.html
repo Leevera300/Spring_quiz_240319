@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/booking/style.css">
 </head>
 <body>
 	<div id="wrap" class="container">
@@ -88,16 +90,19 @@
 					
 					//response
 					, success:function(data) { // data: JSON String -> jquery ajax 함수가 parsing =? js dictionary
-					// {"code":200, "result":"성공"}
+					// {"code":200, "result":checkBooking}
+					// {"code":500, "error_message":예약 내역이 없습니다.}
 					// alert("success");
-					if (data.result == "성공") {
+					if (data.code == 500) {
+						// 예약 없음
+						alert(data.error_message);
+					} else if (data.code == 200) {
 						// 목록 화면으로 이동 - GET Method 요청
-						alert("이름:" + data.name +"\n"
-							+ "날짜:" + data.date +"\n"
-							+ "일수:" + data.date +"\n"
-							+ "인원:" + data.headcount +"\n"
-							+ "상태:" + data.state);
-						
+						alert("이름:" + data.result.name +"\n"
+							+ "날짜:" + data.result.date +"\n"
+							+ "일수:" + data.result.day +"\n"
+							+ "인원:" + data.result.headcount +"\n"
+							+ "상태:" + data.result.state);
 					}
 				}
 				

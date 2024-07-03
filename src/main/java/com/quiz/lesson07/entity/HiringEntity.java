@@ -1,5 +1,6 @@
 package com.quiz.lesson07.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,26 +18,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString // 객체 출력시 필드 값들이 보인다.
-@AllArgsConstructor // 모든 파라미터 있는 생성자
-@NoArgsConstructor // 파라미터 없는 생성자
-@Builder(toBuilder = true) // setter를 대슨해서 내용을 담음
+@ToString 
+@AllArgsConstructor 
+@NoArgsConstructor 
+@Builder(toBuilder = true) 
 @Getter
-@Table(name = "company")
-@Entity // 이 객체는 엔티티다. BO-JPA-DB
-public class CompanyEntity {
+@Table(name = "hiring")
+@Entity
+public class HiringEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private String name;
+	@Column(name = "companyId")
+	private int companyId;
 	
-	private String business;
+	private String position;
 	
-	private String scale;
+	private String responsibilities;
 	
-	private int headcount;
+	private String qualification;
+	
+	private String type;
+	
+	private String region;
+	
+	private int salary;
+	
+	private LocalDate deadline;
 	
 	@CreationTimestamp // 시간값이 없어도 현재시간으로 들어감, 업데이트시 변경 X
 	@Column(name = "createdAt")
